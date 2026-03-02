@@ -96,8 +96,15 @@ const Index = () => (
     </section>
 
     {/* CTA */}
-    <section className="py-16 bg-hero-gradient">
-      <div className="container mx-auto px-4 text-center">
+    <section className="relative py-20 overflow-hidden">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80')",
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/85 to-accent/75" />
+      <div className="container mx-auto px-4 text-center relative z-10">
         <h2 className="font-display font-bold text-2xl md:text-3xl text-primary-foreground mb-4">
           Ready to Get Started?
         </h2>
@@ -105,10 +112,10 @@ const Index = () => (
           Create your free account today and start connecting with opportunities.
         </p>
         <div className="flex justify-center gap-3">
-          <Button size="lg" variant="secondary" asChild>
+          <Button size="lg" variant="secondary" className="shadow-lg" asChild>
             <Link to="/register">Create Account</Link>
           </Button>
-          <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
+          <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 backdrop-blur-sm" asChild>
             <Link to="/jobs">Browse Jobs</Link>
           </Button>
         </div>
