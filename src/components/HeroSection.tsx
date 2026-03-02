@@ -19,8 +19,15 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-hero-gradient py-20 md:py-28">
-      {/* Background pattern */}
+    <section className="relative overflow-hidden py-24 md:py-32">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80')",
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/80 to-accent/70" />
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
