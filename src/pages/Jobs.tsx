@@ -7,10 +7,13 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JobCard from "@/components/JobCard";
-import { mockJobs, categories, locations, jobTypes } from "@/data/mockData";
+import { categories, locations, jobTypes } from "@/data/mockData";
+import { useJobs } from "@/context/JobContext";
 
 const Jobs = () => {
-  const [searchParams] = useSearchParams();
+  const { jobs } = useJobs();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [query, setQuery] = useState(searchParams.get("q") || "");
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
   const [selectedLocation, setSelectedLocation] = useState(searchParams.get("location") || "all");
@@ -18,14 +21,18 @@ const Jobs = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   const filtered = useMemo(() => {
-    return mockJobs.filter((job) => {
-      const matchQ = !query || job.title.toLowerCase().includes(query.toLowerCase()) || job.company.toLowerCase().includes(query.toLowerCase());
+    return jobs.filter((job) => {
+      const matchQ =
+        !query ||
+        job.title.toLowerCase().includes(query.toLowerCase()) ||
+        job.company.toLowerCase().includes(query.toLowerCase()) ||
+        job.description.toLowerCase().includes(query.toLowerCase());
       const matchCat = selectedCategory === "all" || job.category === selectedCategory;
       const matchLoc = selectedLocation === "all" || job.location === selectedLocation;
       const matchType = selectedType === "all" || job.type === selectedType;
       return matchQ && matchCat && matchLoc && matchType;
     });
-  }, [query, selectedCategory, selectedLocation, selectedType]);
+  }, [jobs, query, selectedCategory, selectedLocation, selectedType]);
 
   const hasFilters = selectedCategory !== "all" || selectedLocation !== "all" || selectedType !== "all" || query;
 
@@ -34,16 +41,17 @@ const Jobs = () => {
     setSelectedCategory("all");
     setSelectedLocation("all");
     setSelectedType("all");
+    setSearchParams({});
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
       <div className="bg-hero-gradient py-10">
         <div className="container mx-auto px-4">
-          <h1 className="font-display font-bold text-3xl text-primary-foreground">Find Jobs</h1>
-          <p className="text-primary-foreground/70 mt-1">Discover {mockJobs.length}+ open positions</p>
+          <h1 className="font-display font-bold text-3xl text-primary-foreground">Explore Open Positions</h1>
+          <p className="text-primary-foreground/80 mt-1">Discover {jobs.length}+ opportunities from leading companies</p>
         </div>
       </div>
 
@@ -53,7 +61,7 @@ const Jobs = () => {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by title or company..."
+            placeholder="Search by title, skill, or company..."
             className="md:max-w-sm"
           />
           <Button
@@ -63,6 +71,7 @@ const Jobs = () => {
           >
             <SlidersHorizontal className="w-4 h-4 mr-2" />Filters
           </Button>
+
           <div className={`flex flex-col md:flex-row gap-3 ${showFilters ? "flex" : "hidden md:flex"}`}>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-full md:w-44"><SelectValue placeholder="Category" /></SelectTrigger>
@@ -71,6 +80,7 @@ const Jobs = () => {
                 {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
               </SelectContent>
             </Select>
+
             <Select value={selectedLocation} onValueChange={setSelectedLocation}>
               <SelectTrigger className="w-full md:w-44"><SelectValue placeholder="Location" /></SelectTrigger>
               <SelectContent>
@@ -78,6 +88,7 @@ const Jobs = () => {
                 {locations.map((l) => <SelectItem key={l} value={l}>{l}</SelectItem>)}
               </SelectContent>
             </Select>
+
             <Select value={selectedType} onValueChange={setSelectedType}>
               <SelectTrigger className="w-full md:w-40"><SelectValue placeholder="Job Type" /></SelectTrigger>
               <SelectContent>
@@ -86,24 +97,31 @@ const Jobs = () => {
               </SelectContent>
             </Select>
           </div>
+
           {hasFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-muted-foreground">
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-muted-foreground hover:text-foreground">
               <X className="w-4 h-4 mr-1" />Clear
             </Button>
           )}
         </div>
 
-        {/* Results */}
-        <p className="text-sm text-muted-foreground mb-4">{filtered.length} job{filtered.length !== 1 ? "s" : ""} found</p>
+        {/* Results count */}
+        <p className="text-sm text-muted-foreground mb-4 font-medium">
+          Showing {filtered.length} job{filtered.length !== 1 ? "s" : ""}
+        </p>
+
+        {/* Results grid */}
         <div className="grid gap-4 md:grid-cols-2">
           {filtered.map((job, i) => (
             <JobCard key={job.id} job={job} index={i} />
           ))}
         </div>
+
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-muted-foreground">
-            <p className="text-lg font-medium">No jobs found</p>
-            <p className="text-sm mt-1">Try adjusting your search or filters</p>
+          <div className="bg-card rounded-xl border border-border text-center py-16 text-muted-foreground shadow-card">
+            <p className="text-lg font-semibold text-foreground">No matching positions found</p>
+            <p className="text-sm mt-1 mb-4">Try clearing filters or adjusting your search keywords.</p>
+            <Button variant="outline" onClick={clearFilters}>Reset All Filters</Button>
           </div>
         )}
       </div>

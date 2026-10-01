@@ -10,33 +10,44 @@ const Footer = () => (
             <div className="w-8 h-8 rounded-lg bg-hero-gradient flex items-center justify-center">
               <Briefcase className="w-4 h-4 text-primary-foreground" />
             </div>
-            JobFlow
+            Career Connect Hub
           </Link>
           <p className="text-sm text-sidebar-foreground/60 leading-relaxed">
-            Connecting talented professionals with outstanding opportunities worldwide.
+            Connecting talented professionals with outstanding career opportunities worldwide.
           </p>
         </div>
-        {[
-          { title: "For Job Seekers", links: ["Browse Jobs", "Companies", "Career Advice"] },
-          { title: "For Employers", links: ["Post a Job", "Browse Candidates", "Pricing"] },
-          { title: "Company", links: ["About Us", "Contact", "Privacy Policy"] },
-        ].map((col) => (
-          <div key={col.title}>
-            <h4 className="font-semibold text-sm mb-3">{col.title}</h4>
-            <ul className="space-y-2">
-              {col.links.map((l) => (
-                <li key={l}>
-                  <span className="text-sm text-sidebar-foreground/60 hover:text-sidebar-primary cursor-pointer transition-colors">
-                    {l}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+
+        <div>
+          <h4 className="font-semibold text-sm mb-3">For Job Seekers</h4>
+          <ul className="space-y-2 text-sm text-sidebar-foreground/60">
+            <li><Link to="/jobs" className="hover:text-sidebar-primary transition-colors">Browse Jobs</Link></li>
+            <li><Link to="/companies" className="hover:text-sidebar-primary transition-colors">Top Companies</Link></li>
+            <li><Link to="/register" className="hover:text-sidebar-primary transition-colors">Create Profile</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-sm mb-3">For Employers</h4>
+          <ul className="space-y-2 text-sm text-sidebar-foreground/60">
+            <li><Link to="/dashboard" className="hover:text-sidebar-primary transition-colors">Post a Job</Link></li>
+            <li><Link to="/companies" className="hover:text-sidebar-primary transition-colors">Browse Talent</Link></li>
+            <li><Link to="/contact" className="hover:text-sidebar-primary transition-colors">Enterprise Support</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-semibold text-sm mb-3">Company & Support</h4>
+          <ul className="space-y-2 text-sm text-sidebar-foreground/60">
+            <li><Link to="/about" className="hover:text-sidebar-primary transition-colors">About Us</Link></li>
+            <li><Link to="/contact" className="hover:text-sidebar-primary transition-colors">Contact Us</Link></li>
+            <li><Link to="/privacy" className="hover:text-sidebar-primary transition-colors">Privacy Policy</Link></li>
+          </ul>
+        </div>
       </div>
-      <div className="mt-10 pt-6 border-t border-sidebar-border text-center text-xs text-sidebar-foreground/40">
-        © 2026 JobFlow. All rights reserved.
+
+      <div className="mt-10 pt-6 border-t border-sidebar-border flex flex-col sm:flex-row items-center justify-between text-xs text-sidebar-foreground/50 gap-2">
+        <p>© 2026 Career Connect Hub. All rights reserved.</p>
+        <p>Created with excellence by <span className="font-semibold text-sidebar-foreground">Tejaswini Rakhunde</span></p>
       </div>
     </div>
   </footer>
